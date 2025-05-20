@@ -1,8 +1,10 @@
 package tech.codeguru.jobly.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.codeguru.jobly.entity.Job;
 import tech.codeguru.jobly.entity.RecruiterProfile;
 import tech.codeguru.jobly.entity.dto.request.RecruiterProfileDTO;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/recruiters")
-public class RecruiterProfileController {
+public class RecruiterController {
 
     @Autowired
     private RecruiterProfileService recruiterService;
@@ -21,11 +23,11 @@ public class RecruiterProfileController {
     @Autowired
     private JobService jobService;
 
-//    @PostMapping
-//    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterProfileDTO request) {
-//        RecruiterProfile recruiter = recruiterService.createRecruiter(request);
-//        return ResponseEntity.ok("Recruiter created with ID: " + recruiter.getId());
-//    }
+    @PostMapping(value = "/registration")
+    public ResponseEntity<?> createRecruiter(@RequestBody RecruiterProfileDTO request) {
+        RecruiterProfile recruiter = recruiterService.createRecruiter(request);
+        return ResponseEntity.ok("Recruiter created with ID: " + recruiter.getId());
+    }
 
     @GetMapping
     public ResponseEntity<List<RecruiterProfile>> getAllRecruiters() {
@@ -49,9 +51,28 @@ public class RecruiterProfileController {
         return ResponseEntity.ok("Recruiter deleted with ID: " + id);
     }
 
-    @PostMapping("/job/{recruiterId}")
+    @PostMapping("/jobs/{recruiterId}")
     public ResponseEntity<Job> postJob(@PathVariable Long recruiterId, @RequestBody Job job) {
         return ResponseEntity.ok(jobService.postJob(job, recruiterId));
+    }
+
+    @GetMapping("/jobs")
+    public ResponseEntity<List<Job>> getAllJobs() {
+        List<Job> jobs = jobService.getAllJobs();
+        return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/jobs/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable Long id) {
+        return jobService.getJobById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/jobs/{id}")
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
+        jobService.deleteJob(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

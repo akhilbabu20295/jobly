@@ -20,14 +20,15 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fullName;
-    private String phoneNumber;
+    private String bio;
+    private String firstName;
+    private String lastName;
+    private String designation;
     private String email;
     private String address;
     private String location;
     private String mobile;
     private String dateOfBirth;
-    private Integer experience;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")  // Foreign Key

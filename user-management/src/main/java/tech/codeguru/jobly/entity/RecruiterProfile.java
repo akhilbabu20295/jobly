@@ -25,17 +25,9 @@ public class RecruiterProfile {
 
     @Column(unique = true, nullable = false)
     private String email;
-
     private String phone;
     private String profilePictureUrl;
     private String location;
-
-    // Professional Info
-    private String jobTitle;
-    private String companyName;
-    private String companyLogoUrl;
-    private String companyWebsite;
-    private String industry;
     private Integer yearsOfExperience;
     @Column(length = 2000)
     private String bio;
@@ -43,11 +35,13 @@ public class RecruiterProfile {
     private Integer activeJobPostCount;
     // Social Links
     private String linkedInUrl;
-    private String twitterUrl;
     private Boolean isVerified = false;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")  // Foreign Key
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

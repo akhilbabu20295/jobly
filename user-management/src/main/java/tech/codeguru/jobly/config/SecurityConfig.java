@@ -37,8 +37,16 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
-                                "/api/v1/user/register","/api/v1/user/login",
-                                "/api/v1/profile/**","/api/v1/admin/skills"
+                                "/api/v1/user/register",
+                                "/api/v1/user/login",
+                                "/api/v1/user/profile/**",
+                               "/api/v1/recruiters/registration",
+                                "/api/v1/companies",
+                                "api/v1/recruiters/registration",
+                                "/api/v1/companies/create",
+                                "api/v1/companies/**",
+                                "/api/v1/user/profile/update/**",
+                                "/api/v1/profile/resume/upload/**","/api/v1/admin/skills","/extract/json/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

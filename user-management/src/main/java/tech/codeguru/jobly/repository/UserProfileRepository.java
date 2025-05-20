@@ -11,8 +11,8 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Long> 
 
     UserProfile findByUser_Id(Long userId);
 
-    @Modifying
+    /*@Modifying
     @Transactional
     @Query("UPDATE UserProfile u SET u.experience = :experience WHERE u.id = :id")
-    Integer updateExperienceById(@Param("id") Long id, @Param("experience") Integer experience);
+    Integer updateExperienceById(@Param("id") Long id, @Param("experience") Integer experience);*/
 }

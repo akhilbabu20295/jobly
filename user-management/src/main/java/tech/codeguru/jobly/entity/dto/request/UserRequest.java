@@ -12,9 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
-    private String fullName;
+    private String bio;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String phoneNumber;
+    private String designation;
     private String address;
     private String location;
     private String mobile;

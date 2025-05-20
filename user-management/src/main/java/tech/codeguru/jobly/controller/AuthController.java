@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.codeguru.jobly.entity.User;
 import tech.codeguru.jobly.entity.dto.request.AuthenticationRequest;
+import tech.codeguru.jobly.entity.dto.request.LoginRequest;
 import tech.codeguru.jobly.entity.dto.response.AuthenticationResponse;
 import tech.codeguru.jobly.service.JwtUtilService;
 import tech.codeguru.jobly.service.UserProfileService;
@@ -33,9 +34,9 @@ public class AuthController {
 
     @PostMapping("/user/login")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest authenticationRequest
+            @RequestBody LoginRequest loginRequest
     ) {
-        return ResponseEntity.ok(userProfileService.authenticate(authenticationRequest));
+        return ResponseEntity.ok(userProfileService.authenticate(loginRequest));
     }
 
 

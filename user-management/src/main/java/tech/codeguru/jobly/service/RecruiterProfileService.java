@@ -1,11 +1,14 @@
 package tech.codeguru.jobly.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tech.codeguru.jobly.entity.RecruiterProfile;
-import tech.codeguru.jobly.entity.UserProfile;
+import org.springframework.web.multipart.MultipartFile;
+import tech.codeguru.jobly.entity.*;
 import tech.codeguru.jobly.entity.dto.request.RecruiterProfileDTO;
+import tech.codeguru.jobly.repository.CompanyRepository;
 import tech.codeguru.jobly.repository.RecruiterProfileRepository;
+import tech.codeguru.jobly.repository.UserRepository;
 
 import java.util.List;
 
@@ -15,13 +18,32 @@ public class RecruiterProfileService {
     @Autowired
     private RecruiterProfileRepository recruiterRepo;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public RecruiterProfile createRecruiter(RecruiterProfileDTO recruiterProfileDTO) {
         if (recruiterRepo.findByEmail(recruiterProfileDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
+        User user = new User();
+        user.setEmail(recruiterProfileDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(recruiterProfileDTO.getPassword()));
+        user.setRole(Role.RECRUITER);
+        userRepository.save(user);
+
+        // Fetch Company
+        Company company = companyRepository.findById(recruiterProfileDTO.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company not found with ID: " + recruiterProfileDTO.getCompanyId()));
+
         RecruiterProfile recruiter = mapToEntity(recruiterProfileDTO);
+        recruiter.setCompany(company);
         return recruiterRepo.save(recruiter);
     }
 
@@ -61,16 +83,10 @@ public class RecruiterProfileService {
         r.setPhone(req.getPhone());
         r.setProfilePictureUrl(req.getProfilePictureUrl());
         r.setLocation(req.getLocation());
-        r.setJobTitle(req.getJobTitle());
-        r.setCompanyName(req.getCompanyName());
-        r.setCompanyLogoUrl(req.getCompanyLogoUrl());
-        r.setCompanyWebsite(req.getCompanyWebsite());
-        r.setIndustry(req.getIndustry());
         r.setYearsOfExperience(req.getYearsOfExperience());
         r.setBio(req.getBio());
         r.setActiveJobPostCount(req.getActiveJobPostCount());
         r.setLinkedInUrl(req.getLinkedInUrl());
-        r.setTwitterUrl(req.getTwitterUrl());
         r.setIsVerified(req.getIsVerified());
     }
 }

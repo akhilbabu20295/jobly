@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @RestController()
 @RequestMapping("/api/v1/user")
-public class UserProfileController {
+public class UserController {
 
 
     @Autowired
@@ -42,12 +42,12 @@ public class UserProfileController {
         UserProfile user = userProfileService.updateUserProfile(userId, userRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+/*
     @PutMapping("/profile/experience/{id}")
     public ResponseEntity<String> updateExperience(@PathVariable Long id, @RequestParam Integer experience) {
         userProfileService.updateExperience(id, experience);
         return ResponseEntity.ok("Experience updated successfully");
-    }
+    }*/
 
     @PatchMapping("/profile/resume/upload/{userId}")
     public ResponseEntity<String> uploadResume(@PathVariable Long userId, @RequestParam("file") MultipartFile file) throws IOException {
